@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 let numofPage = 2;
-const PaginatedTable = ({ data, dataInfo, addiconeField , children , Searchparams , numofPage}) => {
+const PaginatedTable = ({ data, dataInfo, additionField , children , Searchparams , numofPage}) => {
   const [initData, setinitData] = useState(data);
   const [tabaleData, setTabaleData] = useState([]);
   const [currentPage, setcurrentPage] = useState(1);
@@ -10,7 +10,7 @@ const PaginatedTable = ({ data, dataInfo, addiconeField , children , Searchparam
   useEffect(()=>{
     setinitData(data.filter(d=>d[Searchparams.searchFields].includes(searchChar)))
     setcurrentPage(1)
-  },[searchChar])
+  },[searchChar , data])
   useEffect(() => {
     let pCount =Math.ceil( initData.length / numofPage);
     setpageCount(pCount);
@@ -46,7 +46,11 @@ const PaginatedTable = ({ data, dataInfo, addiconeField , children , Searchparam
             {dataInfo.map((i) => (
               <th key={i.field}>{i.title}</th>
             ))}
-            {addiconeField ? <th>{addiconeField.title}</th> : null}
+             {additionField
+              ? additionField.map((a, index) => (
+                  <th key={a.id + "__" + index}>{a.title}</th>
+                ))
+              : null}
           </tr>
         </thead>
         <tbody>
@@ -55,7 +59,11 @@ const PaginatedTable = ({ data, dataInfo, addiconeField , children , Searchparam
               {dataInfo.map((i) => (
                 <td key={i.field + "_" + d.id}>{d[i.field]}</td>
               ))}
-              {addiconeField ? <th>{addiconeField.element(d.id)}</th> : null}
+              {additionField
+              ? additionField.map((a, index) => (
+                  <td key={a.id + "__" + index}>{a.element(d)}</td>
+                ))
+              : null}
             </tr>
           ))}
         </tbody>

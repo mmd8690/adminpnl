@@ -1,33 +1,37 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { Alert } from "../../assets/utils/alert";
-import { logoutService } from "../../services/auth";
 
 const Logout = () => {
-  const [loading, setLoading] = useState(true);
-  const handelLogout = async () => {
-    try {
-      const res = await logoutService();
+  const [login, setloading] = useState(true);
+  useEffect(()=>{
+    const logintoken=JSON.parse(localStorage.getItem("loginToken"))
+    axios.get("https://ecomadminapi.azhadev.ir/api/auth/logout",{
+      headers:{
+        Authorization: `Bearer ${logintoken.token}`
+      }
+    }) .then((res) => {
       if (res.status == 200) {
         localStorage.removeItem("loginToken");
       } else {
-        Alert("error", res.data.message, "متاسفم...!");
+          Alert("متاسفم...!", res.data.message, "error");
       }
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      Alert("error", "متاسفانه مشکلی از سمت سرور رخ داده", "متاسفم...!");
-    }
-  };
-  useEffect(() => {handelLogout()}, []);
+      setloading(false);
+    }).catch(error=>{
+      setloading(false);
+      Alert("error","متاسفانه مشکلی از سمت سرور رخ داده","متاسفم...!" );
+  });
+}, []);
   return (
     <>
-      {loading ? (
-        <h1 className="text-center waiting_center">لطفا صبر کنید...</h1>
+      {login ? (
+        <h1 className="text-center waiting-center"> لطفا صبر کنید... </h1>
       ) : (
-        <Navigate to="/auth/login" />
+        <Navigate to={"/auth/login"} />
       )}
     </>
   );
 };
+
 export default Logout;

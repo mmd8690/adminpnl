@@ -42,7 +42,7 @@ const Content = () => {
           <Route path="/permissions" element={<Permission/>} />
           <Route path="/comments" element={<Comment/>} />
           <Route path="/question" element={<Question/>} />
-          <Route path="/logout" element={<Logout />} />
+          <Route path="/logout" element={<Logout/>} />
           <Route path="/*" element={<Dashboard />} />
         </Routes>
       </section>

@@ -6,9 +6,8 @@
     font-weight: normal;
     font-style: normal;
 }
-
 body{
-    background: url(/assets/images/body_back4.jpg) repeat;
+    background:url( ../images/body_back4.jpg) ;
 }
 
 *{
