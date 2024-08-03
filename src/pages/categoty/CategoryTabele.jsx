@@ -5,32 +5,40 @@ import { getCategoryService } from "../../services/category";
 import { Alert } from "../../assets/utils/alert";
 import ShowInMenu from "./tableaddition/ShowInMenu";
 import Actions from "./tableaddition/Actions";
+import jMOment from "moment-jalaali"
+import { Outlet, useLocation, useParams } from "react-router-dom";
+import { ConvertdatatoJalali } from "../../assets/utils/ConvertData";
 const CategoryTabele = () => {
+  const param = useParams();
+  const location = useLocation();
   const [data, setData] = useState([]);
+  const [forceRender , setforceRender] = useState(0)
   const handelGetCategoris = async () => {
     try {
-      const res = await getCategoryService();
+      const res = await getCategoryService(param.categorieId);
       if (res.status === 200) {
         setData(res.data.data);
       } else {
         Alert("error", " مشکلی از سمت سرور رخ داده ", " مشکل ");
       }
     } catch (error) {
-      Alert("error", " مشکلی از سمت سرور رخ داده ", " مشکل ");
+      console.log(error.message);
     }
   };
-  useEffect(() => {
+  useEffect(() => { 
     handelGetCategoris();
-  }, []);
+  }, [param , forceRender]);
   const dataInfo = [
     { field: "id", title: "#" },
     { field: "title", title: "عنوان محصول" },
     { field: "show_in_menu", title: " نمایش در منو" },
     { field: "parent_id", title: " والد " },
-    { field: "created_at", title: "تاریخ " },
   ];
-
   const additionField = [
+    {
+      title: " تاریخ ",
+      element: (rowData) => ConvertdatatoJalali(rowData.created_at) ,
+    },
     {
       title: "نمایش در منو",
       element: (rowData) => <ShowInMenu rowData={rowData} />,
@@ -46,15 +54,21 @@ const CategoryTabele = () => {
     searchFields: "title",
   };
   return (
-    <PaginatedTable
+    <>
+     <Outlet/>
+      {data.length ?
+      <PaginatedTable
       data={data}
       dataInfo={dataInfo}
       additionField={additionField}
       Searchparams={Searchparams}
       numofPage={4}
     >
-      <AddCategory />
+      <AddCategory  setforceRender={setforceRender}/>
     </PaginatedTable>
+    :<h5 className="text-center my-5 text-danger"> دسته بندی یافت نشد </h5>
+      }
+    </>
   );
 };
 

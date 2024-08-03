@@ -1,15 +1,26 @@
-import React from 'react';
+import React from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
-const Actions = ({rowdata}) => {
-    return (
-        <div>
-                  <>
+const Actions = (rowData) => {
+  const navigate = useNavigate();
+  const param=useParams()
+  return (
+    <div>
+      <>
+       { !param .categorieId? 
         <i
           className="fas fa-project-diagram text-info mx-1 hoverable_text pointer has_tooltip"
           title="زیرمجموعه"
           data-bs-toggle="tooltip"
           data-bs-placement="top"
-        ></i>
+          onClick={() =>
+            navigate(`/categories/${rowData.rowData.id}`, {
+              state: {
+                parentData: rowData,
+              },
+            })
+          }
+        ></i> : null}
         <i
           className="fas fa-edit text-warning mx-1 hoverable_text pointer has_tooltip"
           title="ویرایش دسته"
@@ -31,8 +42,8 @@ const Actions = ({rowdata}) => {
           data-bs-placement="top"
         ></i>
       </>
-        </div>
-    );
-}
+    </div>
+  );
+};
 
 export default Actions;
