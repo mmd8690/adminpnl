@@ -3,7 +3,12 @@ import HttpsService from "./httpsService";
 export const getCategoryService = (id)=>{
   return HttpsService(`/admin/categories${id ? `?parent=${id}` : ""}`, 'get');
 };
-
+export const getSingleCategory =(id)=>{
+  return HttpsService(`/admin/categories/${id}`)
+}
+export const deleteCategoryService = (id)=>{
+  return HttpsService(`/admin/categories/${id}`, 'delete');
+}
 export const createNewCategoryService = (data) => {
   if (data.image) {
       let formdata = new FormData();

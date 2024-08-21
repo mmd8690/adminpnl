@@ -1,33 +1,53 @@
 import React, { useEffect, useState } from "react";
 import PaginatedTable from "../../componenet/paginatedTable";
 import AddCategory from "./AddCategory";
-import { getCategoryService } from "../../services/category";
-import { Alert } from "../../assets/utils/alert";
+import { deleteCategoryService, getCategoryService } from "../../services/category";
+import { Alert, Confirm } from "../../assets/utils/alert";
 import ShowInMenu from "./tableaddition/ShowInMenu";
 import Actions from "./tableaddition/Actions";
-import jMOment from "moment-jalaali"
-import { Outlet, useLocation, useParams } from "react-router-dom";
+import { Outlet, useParams } from "react-router-dom";
 import { ConvertdatatoJalali } from "../../assets/utils/ConvertData";
 const CategoryTabele = () => {
   const param = useParams();
-  const location = useLocation();
   const [data, setData] = useState([]);
-  const [forceRender , setforceRender] = useState(0)
+  const [forceRender, setforceRender] = useState(0);
+  const [loading, setloading] = useState(false);
+const handelDeleteCategory = async (rowData)=>{
+  if (await Confirm('حذف دسته بندی', `آیا از حذف ${rowData.title} اطمینان دارید؟`)) {
+ 
+   try {
+     const res = await deleteCategoryService(rowData.id);
+     if (res.status === 200) {
+       Alert('success','انجام شد', res.data.message)
+       setData(data.filter(d=>d.id != rowData.id))
+
+      }
+   } catch (error) {
+     console.log(error); 
+
+   }
+  }
+}
+
   const handelGetCategoris = async () => {
+    setloading(true);
     try {
       const res = await getCategoryService(param.categorieId);
+      setData(res.data.data);
       if (res.status === 200) {
-        setData(res.data.data);
       } else {
         Alert("error", " مشکلی از سمت سرور رخ داده ", " مشکل ");
       }
     } catch (error) {
       console.log(error.message);
+    } finally {
+      setloading(false);
     }
   };
-  useEffect(() => { 
+  useEffect(() => {
+    console.log(additionField);
     handelGetCategoris();
-  }, [param , forceRender]);
+  }, [param, forceRender]);
   const dataInfo = [
     { field: "id", title: "#" },
     { field: "title", title: "عنوان محصول" },
@@ -37,7 +57,7 @@ const CategoryTabele = () => {
   const additionField = [
     {
       title: " تاریخ ",
-      element: (rowData) => ConvertdatatoJalali(rowData.created_at) ,
+      element: (rowData) => ConvertdatatoJalali(rowData.created_at),
     },
     {
       title: "نمایش در منو",
@@ -45,7 +65,7 @@ const CategoryTabele = () => {
     },
     {
       title: "عملیات",
-      element: (rowData) => <Actions rowData={rowData} />,
+      element: (rowData) => <Actions rowData={rowData} handelDeleteCategory={handelDeleteCategory}/>,
     },
   ];
   const Searchparams = {
@@ -55,19 +75,25 @@ const CategoryTabele = () => {
   };
   return (
     <>
-     <Outlet/>
-      {data.length ?
+      <Outlet />
+
       <PaginatedTable
-      data={data}
-      dataInfo={dataInfo}
-      additionField={additionField}
-      Searchparams={Searchparams}
-      numofPage={4}
-    >
-      <AddCategory  setforceRender={setforceRender}/>
-    </PaginatedTable>
-    :<h5 className="text-center my-5 text-danger"> دسته بندی یافت نشد </h5>
-      }
+        data={data}
+        dataInfo={dataInfo}
+        additionField={additionField}
+        Searchparams={Searchparams}
+        numOfPAge={5}
+        loading={loading}
+        // data={data}
+        // dataInfo={dataInfo}
+        // additionField={additionField}
+        // numOfPAge={5}
+        // Searchparams={Searchparams}
+        // loading={loading}
+        
+      >
+        <AddCategory setforceRender={setforceRender} />
+      </PaginatedTable>
     </>
   );
 };
