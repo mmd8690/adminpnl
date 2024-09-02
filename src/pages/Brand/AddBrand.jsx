@@ -1,7 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { Formik, Form } from "formik";
+import { initialValues, onSubmit, validationSchema } from "./Core";
 import ModalsContiner from "../../componenet/ModalsContiner";
+import SumitButton from "../../componenet/form/SumitButton";
+import FormikControl from "../../componenet/form/FormikControle";
+import { editBrandService } from "../../services/Brand";
 
-const AddBrand = () => {
+const AddBrands = ({ setData  , editBrand }) => {
+  const [reInitialValuse, setreInitialValuse] = useState(null);
+
+    useEffect(()=>{
+    if(editBrand){
+      setreInitialValuse({
+        original_name: editBrand.original_name,
+        persian_name: editBrand.persian_name,
+        descriptions: editBrand.descriptions,
+      })
+    }else setreInitialValuse(null)
+  },[editBrand ])
   return (
     <>
       <button
@@ -12,75 +28,54 @@ const AddBrand = () => {
         <i className="fas fa-plus text-light"></i>
       </button>
       <ModalsContiner
-        fullScreen={false}
         id={"add_brand_modal"}
-        title={"افزودن برند"}
+        title={editBrand?"ویرایش برند ": "افزودن برند"}
+        fullScreen={false}
       >
         <div className="container">
           <div className="row justify-content-center">
-            <div className="col-12">
-              <div className="input-group my-3 dir-ltr">
-                <input
+            <Formik
+              initialValues={reInitialValuse ||initialValues}
+              onSubmit={(values, actions) =>
+                onSubmit(values, actions, setData, editBrand)
+              }
+              validationSchema={validationSchema}
+              enableReinitialize
+            >
+              <Form>
+                <FormikControl
+                  control="input"
                   type="text"
-                  className="form-control"
+                  name="original_name"
+                  label="عنوان لاتین"
                   placeholder="کیبرد را در حالت لاتین قرار دهید"
                 />
-                <span className="input-group-text w_8rem justify-content-center">
-                  عنوان لاتیتن برند
-                </span>
-              </div>
-            </div>
-            <div className="col-12">
-              <div className="input-group my-3 dir-ltr">
-                <input
+                <FormikControl
+                  control="input"
                   type="text"
-                  className="form-control"
+                  name="persian_name"
+                  label="عنوان فارسی"
                   placeholder="کیبرد را در حالت فارسی قرار دهید"
                 />
-                <span className="input-group-text w_8rem justify-content-center">
-                  عنوان فارسی برند
-                </span>
-              </div>
-            </div>
-            <div className="col-12">
-              <div className="input-group my-3 dir-ltr">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="متن کوتاه در مورد برند"
+                <FormikControl
+                  control="textarea"
+                  name="descriptions"
+                  label="توضیحات"
+                  placeholder="توضیحات"
                 />
-                <span className="input-group-text w_8rem justify-content-center">
-                  توضیحات برند
-                </span>
-              </div>
-            </div>
-            <div className="col-12">
-              <div className="input-group mb-3 dir-ltr">
-                <input
-                  type="file"
-                  className="form-control"
+{/* 
+                <FormikControl
+                  control="file"
+                  name="logo"
+                  label="تصویر"
                   placeholder="تصویر"
-                />
-                <span className="input-group-text w_6rem justify-content-center">
-                  تصویر
-                </span>
-              </div>
-            </div>
-            <div className="col-12">
-              <div className="input-group mb-3 dir-ltr">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="یک کلمه در مورد تصویر"
-                />
-                <span className="input-group-text w_6rem justify-content-center">
-                  توضیح تصویر
-                </span>
-              </div>
-            </div>
-            <div className="btn_box text-center col-12 col-md-6 col-lg-8 mt-4">
-              <button className="btn btn-primary ">ذخیره</button>
-            </div>
+                /> */}
+
+                <div className="btn_box text-center col-12">
+                  <SumitButton />
+                </div>
+              </Form>
+            </Formik>
           </div>
         </div>
       </ModalsContiner>
@@ -88,4 +83,4 @@ const AddBrand = () => {
   );
 };
 
-export default AddBrand;
+export default AddBrands;

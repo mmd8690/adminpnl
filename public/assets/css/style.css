@@ -7,7 +7,7 @@
     font-style: normal;
 }
 body{
-    background:url( ../images/body_back4.jpg) ;
+    background:url(../images/body_back4.jpg) ;
 }
 
 *{
@@ -389,7 +389,9 @@ td , th {
     line-height: 26px;
     text-align: center;
 }
-
+.danger_Shadow{
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.26);
+}
 .dashboard_card_parent:nth-child(1) .dashboard_card{
     background: hsla(33, 100%, 53%, 1);
     background: linear-gradient(90deg, hsla(33, 100%, 53%, 1) 0%, hsla(58, 100%, 68%, 1) 100%);

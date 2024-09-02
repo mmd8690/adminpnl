@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { CategorieContext } from "../../../assets/context/CategorieContext";
-import { deleteCategury } from "../../../services/category";
 
 const Actions = ({ rowData, handelDeleteCategory }) => {
   const navigate = useNavigate();

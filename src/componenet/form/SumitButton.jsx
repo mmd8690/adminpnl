@@ -10,7 +10,7 @@ const SumitButton = () => {
                       return (
                         <button
                           type="submit"
-                          className="btn btn-primary "
+                          className="btn btn-primary btn-sm "
                           disabled={form.isSubmitting}
                         >
                           ذخیره

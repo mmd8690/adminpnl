@@ -13,7 +13,7 @@ export const Confirm = (title, text)=>{
       title,
       text,
       icon:"warning",
-      buttons: ["خیر", "بله"],
+      confirmButtonText: ["بله"],
       dangerMode: true
   })
 }

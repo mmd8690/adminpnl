@@ -45,7 +45,6 @@ const handelDeleteCategory = async (rowData)=>{
     }
   };
   useEffect(() => {
-    console.log(additionField);
     handelGetCategoris();
   }, [param, forceRender]);
   const dataInfo = [
@@ -84,13 +83,6 @@ const handelDeleteCategory = async (rowData)=>{
         Searchparams={Searchparams}
         numOfPAge={5}
         loading={loading}
-        // data={data}
-        // dataInfo={dataInfo}
-        // additionField={additionField}
-        // numOfPAge={5}
-        // Searchparams={Searchparams}
-        // loading={loading}
-        
       >
         <AddCategory setforceRender={setforceRender} />
       </PaginatedTable>
