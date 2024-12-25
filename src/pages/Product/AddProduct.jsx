@@ -1,23 +1,40 @@
-import React from "react";
-import ModalsContiner from "../../componenet/ModalsContiner";
-
+import React, { useEffect, useState } from "react";
+import { Form, Formik } from "formik";
+import { initialValues, onSubmit, validationSchema } from "./Core";
+import FormikControle from "../../componenet/form/FormikControle"
+import { getCategoryService } from "../../services/Category";
 const AddProduct = () => {
+  useEffect(()=>{
+    getAllCategories()
+  },[])
+  
+  const [ parentCategories , setparentCategories]= useState([])
+  const getAllCategories=async()=>{
+    const res =await getCategoryService();
+    if(res.status==200){
+      setparentCategories(res.data.data.map(d=>{
+        return{id:d.id , value: d.value}
+      }))
+    }
+  }
   return (
-    <>
-      <button
-        className="btn btn-success d-flex justify-content-center align-items-center"
-        data-bs-toggle="modal"
-        data-bs-target="#add_product_modal"
-      >
-        <i className="fas fa-plus text-light"></i>
-      </button>
-      <ModalsContiner
-        fullScreen={true}
-        id={"add_product_modal"}
-        title={"افزودن محصول جدید  "}
-      >
-   <div className="container">
+    <Formik
+      initialValues={initialValues}
+      onSubmit={(value, action) => onSubmit(value, action)}
+      validationSchema={validationSchema}
+    >
+      <Form>
+        <div className="container">
+          <h4 className="text-center my-3">افزودن محصول جدید</h4>
           <div className="row justify-content-center">
+            <FormikControle
+              controle="select"
+              option={parentCategories}
+              name="parentcats"
+              labele="دسته والد"
+              firstItem=""
+            />
+            
             <div className="col-12 col-md-6 col-lg-8">
               <div className="input-group mb-2 dir_ltr">
                 <select type="text" className="form-control">
@@ -165,7 +182,11 @@ const AddProduct = () => {
             </div>
             <div className="col-12 col-md-6 col-lg-8">
               <div className="input-group mb-3 dir_ltr">
-                <input type="file" className="form-control" placeholder="تصویر" />
+                <input
+                  type="file"
+                  className="form-control"
+                  placeholder="تصویر"
+                />
                 <span className="input-group-text w_6rem justify-content-center">
                   تصویر
                 </span>
@@ -239,8 +260,8 @@ const AddProduct = () => {
             </div>
           </div>
         </div>
-      </ModalsContiner>
-    </>
+      </Form>
+    </Formik>
   );
 };
 

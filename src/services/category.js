@@ -1,6 +1,6 @@
 import HttpsService from "./httpsService";
 
-export const getCategoryService = (id)=>{
+export const getCategoryService = (id=null)=>{
   return HttpsService(`/admin/categories${id ? `?parent=${id}` : ""}`, 'get');
 };
 export const getSingleCategory =(id)=>{

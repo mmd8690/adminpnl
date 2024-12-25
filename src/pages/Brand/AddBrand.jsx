@@ -6,7 +6,7 @@ import SumitButton from "../../componenet/form/SumitButton";
 import FormikControl from "../../componenet/form/FormikControle";
 import { editBrandService } from "../../services/Brand";
 
-const AddBrands = ({ setData  , editBrand }) => {
+const AddBrands = ({ setData  , editBrand , seteditBrand}) => {
   const [reInitialValuse, setreInitialValuse] = useState(null);
 
     useEffect(()=>{
@@ -24,6 +24,7 @@ const AddBrands = ({ setData  , editBrand }) => {
         className="btn btn-success d-flex justify-content-center align-items-center"
         data-bs-toggle="modal"
         data-bs-target="#add_brand_modal"
+        onClick={()=>seteditBrand(null)}
       >
         <i className="fas fa-plus text-light"></i>
       </button>

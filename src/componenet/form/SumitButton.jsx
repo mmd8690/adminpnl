@@ -2,7 +2,7 @@ import { FastField } from 'formik';
 import React from 'react';
 import SpinnerLoad from '../SpinnerLoad';
 
-const SumitButton = () => {
+const SubmitButton = () => {
     return (
         <div>
              <FastField>
@@ -29,4 +29,4 @@ const SumitButton = () => {
     );
 }
 
-export default SumitButton;
+export default SubmitButton;

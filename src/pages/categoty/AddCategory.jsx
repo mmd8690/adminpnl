@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import ModalsContiner from "../../componenet/ModalsContiner";
 import { Form, Formik } from "formik";
 import FormikControl from "../../componenet/form/FormikControle";
-import { getCategoryService, getSingleCategory } from "../../services/category";
+import { getCategoryService, getSingleCategory } from "../../services/Category";
 import SumitButton from "../../componenet/form/SumitButton";
 import { useParams } from "react-router-dom";
 import { CategorieContext } from "../../assets/context/CategorieContext";

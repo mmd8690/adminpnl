@@ -1,49 +1,71 @@
-import React from 'react';
-
+import React, { useEffect, useState } from "react";
+import Actions from "./Action";
+import { deleteGurantiService, getGuaranteesService } from "../../services/Guranti";
+import PaginatedTable from "../../componenet/paginatedTable";
+import AddGuranti from "./AddGuranti";
+import { Alert, Confirm } from "../../assets/utils/alert";
 const GurantiTabele = () => {
-    return (
-<>
-<table className="table table-responsive text-center table-hover table-bordered">
-            <thead className="table-secondary">
-                <tr>
-                    <th>#</th>
-                    <th>عنوان گارانتی</th>
-                    <th>مدت گارانتی</th>
-                    <th>توضیحات</th>
-                    <th>عملیات</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>گارانتی 1</td>
-                    <td>12 ماه</td>
-                    <td> توضیحات اجمالی در مورد این گارانتی</td>
-                    <td>
-                        <i className="fas fa-times text-danger mx-1 hoverable_text pointer has_tooltip" title="حذف گارانتی" data-bs-toggle="tooltip" data-bs-placement="top"></i>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <nav aria-label="Page navigation example" className="d-flex justify-content-center">
-            <ul className="pagination dir_ltr">
-                <li className="page-item">
-                <a className="page-link" href="#" aria-label="Previous">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-                </li>
-                <li className="page-item"><a className="page-link" href="#">1</a></li>
-                <li className="page-item"><a className="page-link" href="#">2</a></li>
-                <li className="page-item"><a className="page-link" href="#">3</a></li>
-                <li className="page-item">
-                <a className="page-link" href="#" aria-label="Next">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-                </li>
-            </ul>
-            </nav>
-</>
-    );
-}
+  const [data, setData] = useState([]);
+  const [editGuranti, seteditGuranti] = useState(null);
+  const [loading, setloading] = useState(false);
+  const dataInfo = [
+    { field: "id", title: "#" },
+    { field: "title", title: "عنوان" },
+    { field: "descriptions", title: "توضیحات" },
+    { field: "length", title: "مدت گارانتی" },
+    { field: "length_unit", title: "واحد" },
+  ];
+  const additionField = [
+    {
+      title: " تاریخ ",
+      element: (rowData) => <Actions rowData={rowData} seteditguranti={seteditGuranti} handelDeleteGuranti={handelDeleteGuranti}/>,
+    },
+  ];
+  const Searchparams = {
+    title: "جستجو",
+    placeholder: "قسمتی از عنوان را مشخص کنید ",
+    searchFields: "title",
+  };
+  const handelgetGurani=async ()=>{
+    setloading(true)
+    const res =await getGuaranteesService()
+    res && setloading(false)
+    if(res.status == 200) {
+      setData(res.data.data)
+      setloading(false)
+    }
+  }
+  const handelDeleteGuranti=async(guranti)=>{
+    if (
+      await Confirm(
+        "حذف دسته بندی",
+        `آیا از حذف ${guranti.title} اطمینان دارید؟`
+      )
+    ) {
+      const res = await deleteGurantiService(guranti.id);
+      if (res.status == 200) {
+        Alert("success", res.data.message, "انجام شد");
+        setData((lastdata=>lastdata.filter((d)=>d.id !=guranti.id)))
+      }
+    }
+  };
+  useEffect(()=>{
+    handelgetGurani()
+  },[ editGuranti])
+  return (
+    <>
+      <PaginatedTable
+        data={data}
+        dataInfo={dataInfo}
+        additionField={additionField}
+        Searchparams={Searchparams}
+        numOfPAge={5}
+        loading={loading}
+      >
+        <AddGuranti editGuranti={editGuranti} setData={setData} seteditGuranti={seteditGuranti}/>
+      </PaginatedTable>
+    </>
+  );
+};
 
 export default GurantiTabele;

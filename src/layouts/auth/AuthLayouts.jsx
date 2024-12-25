@@ -1,7 +1,7 @@
 import React from "react";
 import { Navigate, Route, Router, Routes } from "react-router-dom";
-import Login from "../../pages/auth/Login";
 import { UseIsLogin } from "../../hook/authhook";
+import Login from "../../pages/auth/Login";
 
 const Authkayouts = () => {
   const [isLogin , loading] = UseIsLogin()

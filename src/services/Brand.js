@@ -1,8 +1,8 @@
 import HttpsService from "./httpsService"
 
-export const getBrandService=()=>{
-    return HttpsService("/admin/brands", "get")
-}
+export const getAllBrandsService = () => {
+  return HttpsService("/admin/brands", "get");
+};
 export const addNewBrandService = (data) => {
     if (data.logo) {
       let formdata = new FormData();

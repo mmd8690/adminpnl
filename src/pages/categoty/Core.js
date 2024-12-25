@@ -1,6 +1,6 @@
 import *as Yup from"yup"
 import { Alert } from "../../assets/utils/alert";
-import { createNewCategoryService } from "../../services/category";
+import { createNewCategoryService } from "../../services/Category";
 export const initialValues = {
     parent_id: "",
     title: "",
@@ -20,6 +20,7 @@ export const initialValues = {
       if (res.status == 201) {
         Alert("success", "عملیات با موفقیت انجام شد ", "ثبت رکورد");
         setforceRender((last) => last + 1);
+        actions.resetForm();
       }
     } catch (error) {
       console.log(error);

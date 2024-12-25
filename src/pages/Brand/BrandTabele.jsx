@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PaginatedTable from "../../componenet/paginatedTable";
-import { deleteBrandService, getBrandService } from "../../services/Brand";
+import { deleteBrandService, getAllBrandsService } from "../../services/Brand";
 import Actions from "./BrdAction";
 import { apiPah } from "../../services/httpsService";
 import AddBrands from "./AddBrand";
@@ -46,23 +46,23 @@ const BrandTabele = () => {
 
   const handleGetAllBrands = async () => {
     setLoading(true);
-    const res = await getBrandService();
+    const res = await getAllBrandsService();
     res && setLoading(false);
     if (res.status === 200) {
       setData(res.data.data);
     }
   };
-  const handelDeleteBrand = async (rowData) => {
+  const handelDeleteBrand = async (brand) => {
     if (
       await Confirm(
         "حذف دسته بندی",
-        `آیا از حذف ${rowData.title} اطمینان دارید؟`
+        `آیا از حذف ${brand.title} اطمینان دارید؟`
       )
     ) {
-      const res = await deleteBrandService(rowData.id);
+      const res = await deleteBrandService(brand.id);
       if (res.status == 200) {
         Alert("success", res.data.message, "انجام شد");
-        setforceRender(last=>last+1)
+        setData((lastdata=>lastdata.filter((d)=>d.id !=brand.id)))
       }
     }
   };
@@ -80,10 +80,11 @@ const BrandTabele = () => {
         numOfPAge={8}
         loading={loading}
       >
-        <AddBrands setData={setData} editBrand={editBrand} />
+        <AddBrands setData={setData} editBrand={editBrand} seteditBrand={seteditBrand} />
       </PaginatedTable>
     </>
   );
 };
 
 export default BrandTabele;
+

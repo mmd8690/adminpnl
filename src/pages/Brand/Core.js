@@ -9,40 +9,37 @@ export const initialValues = {
   // logo: null,
 };
 
-export const onSubmit = async (values, actions, setData , editBrand) => {
-  if(editBrand){
-    const res = await editBrandService(editBrand.id , values) 
-    if(res.status == 200){
+export const onSubmit = async (values, actions, setData, editBrand) => {
+  if (editBrand) {
+    const res = await editBrandService(editBrand.id, values);
+    if (res.status == 200) {
       Alert("success", res.data.message, "انجام شد");
-      setData(lastData =>{
-        let newData= [...lastData]
-        let Index = newData.findIndex(d=> d.id == editBrand.id)
-        newData[Index]= res.data.data
-        return newData
-      })
+      setData((lastData) => {
+        let newData = [...lastData];
+        let Index = newData.findIndex((d) => d.id == editBrand.id);
+        newData[Index] = res.data.data;
+        return newData;
+      });
     }
-    }else{
-      const res = await addNewBrandService(values);
-  if (res.status === 201) {
-    Alert("success", res.data.message, "انجام شد");
-    actions.reseteform();
+  } else {
+    const res = await addNewBrandService(values);
+    if (res.status === 201) {
+      Alert("success", res.data.message, "انجام شد");
+      actions.resetForm();
 
-    setData(lastData=>[...lastData, res.data.data])
-  }
+      setData((lastData) => [...lastData, res.data.data]);
     }
+  }
 };
 
 export const validationSchema = Yup.object({
-  original_name: Yup.string().required("لطفا این قسمت را پر کنید")
-  .matches(
-    /^[a-zA-Z0-9\s@!%$?&]+$/,
-    "فقط از اعداد و حروف لاتین استفاده شود"
+  original_name: Yup.string()
+    .required("لطفا این قسمت را پر کنید")
+    .matches(/^[a-zA-Z0-9\s@!%$?&]+$/, "فقط از اعداد و حروف لاتین استفاده شود"),
+  persian_name: Yup.string().matches(
+    /^[\u0600-\u06FF\sa-zA-Z0-9@!%$?&]+$/,
+    "فقط از اعداد و حروف استفاده شود"
   ),
-  persian_name: Yup.string()
-    .matches(
-      /^[\u0600-\u06FF\sa-zA-Z0-9@!%$?&]+$/,
-      "فقط از اعداد و حروف استفاده شود"
-    ),
   descriptions: Yup.string().matches(
     /^[\u0600-\u06FF\sa-zA-Z0-9@!%$?&]+$/,
     "فقط از اعداد و حروف استفاده شود"

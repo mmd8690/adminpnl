@@ -1,41 +1,36 @@
 import React, { useEffect, useState } from "react";
 import SpinnerLoad from "./SpinnerLoad";
-const PaginatedTable = ({
+const PaginatedDataTable = ({
   children,
-  data,
+  tableData,
   dataInfo,
-  additionField,
-  numOfPAge,
-  Searchparams,
   loading,
+  pageCount,
+  currentPage,
+  setCurrentPage,
+  searchParams,
+  handleSearch
 }) => {
-  const [initData, setIninData] = useState(data);
-  const [tableData, setTableData] = useState([]);
-  const [currentPage, setCurrentPage] = useState(2);
+
+  const pageRange = 3  
+
   const [pages, setPages] = useState([]);
-  const [pageCount, setPageCount] = useState(1);
-  const [searchChar, setSearchChar] = useState("");
 
-  useEffect(() => {
-    let pCount = Math.ceil(initData.length / numOfPAge);
-    setPageCount(pCount);
+  let timeout;
+
+  const handleSetSearchChar = (char)=>{
+    clearTimeout(timeout);
+    timeout = setTimeout(()=>{
+      handleSearch(char)
+    },2000)
+  }
+
+  useEffect(()=>{
     let pArr = [];
-    for (let i = 1; i <= pCount; i++) pArr = [...pArr, i];
+    for (let i = 1; i <= pageCount; i++) pArr.push(i);
     setPages(pArr);
-  }, [initData]);
+  },[pageCount])
 
-  useEffect(() => {
-    let start = currentPage * numOfPAge - numOfPAge; // 0
-    let end = currentPage * numOfPAge; // 2
-    setTableData(initData.slice(start, end));
-  }, [currentPage, initData]);
-
-  useEffect(() => {
-    setIninData(
-      data.filter((d) => d[Searchparams.searchFields].includes(searchChar))
-    );
-    setCurrentPage(1);
-  }, [searchChar, data]);
   return (
     <>
       <div className="row justify-content-between">
@@ -44,10 +39,10 @@ const PaginatedTable = ({
             <input
               type="text"
               className="form-control"
-              placeholder={Searchparams.placeholder}
-              onChange={(e) => setSearchChar(e.target.value)}
+              placeholder={searchParams.placeholder}
+              onChange={(e) => handleSetSearchChar(e.target.value)}
             />
-            <span className="input-group-text">{Searchparams.title}</span>
+            <span className="input-group-text">{searchParams.title}</span>
           </div>
         </div>
         <div className="col-2 col-md-6 col-lg-4 d-flex flex-column align-items-end">
@@ -56,31 +51,27 @@ const PaginatedTable = ({
       </div>
       {loading ? (
         <SpinnerLoad colorClass={"text-primary"} />
-      ) : data.length ? (
+      ) : tableData.length ? (
         <table className="table table-responsive text-center table-hover table-bordered">
           <thead className="table-secondary">
             <tr>
-              {dataInfo.map((i) => (
-                <th key={i.field}>{i.title}</th>
+              {dataInfo.map((i, index) => (
+                <th key={i.field || `notField__${index}`}>{i.title}</th>
               ))}
-              {additionField
-                ? additionField.map((a, index) => (
-                    <th key={a.id + "__" + index}>{a.title}</th>
-                  ))
-                : null}
             </tr>
           </thead>
           <tbody>
             {tableData.map((d) => (
               <tr key={d.id}>
-                {dataInfo.map((i) => (
-                  <td key={i.field + "_" + d.id}>{d[i.field]}</td>
-                ))}
-                {additionField
-                  ? additionField.map((a, index) => (
-                      <td key={a.id + "___" + index}>{a.element(d)}</td>
-                    ))
-                  : null}
+                {dataInfo.map((i, index) =>
+                  i.field ? (
+                    <td key={i.field + "_" + d.id}>{d[i.field]}</td>
+                  ) : (
+                    <td key={d.id + "__" + i.id + "__" + index}>
+                      {i.elements(d)}
+                    </td>
+                  )
+                )}
               </tr>
             ))}
           </tbody>
@@ -88,6 +79,7 @@ const PaginatedTable = ({
       ) : (
         <h5 className="text-center my-5 text-danger">هیچ رکوردی یافت نشد</h5>
       )}
+
       {pages.length > 1 ? (
         <nav
           aria-label="Page navigation example"
@@ -105,18 +97,45 @@ const PaginatedTable = ({
                 <span aria-hidden="true">&raquo;</span>
               </span>
             </li>
-            {pages.map((page) => (
-              <li className="page-item" key={page}>
+
+            {currentPage > pageRange ? (
+              <li className="page-item me-2">
                 <span
-                  className={`page-link pointer ${
-                    currentPage == page ? "alert-success" : ""
-                  }`}
-                  onClick={() => setCurrentPage(page)}
+                  className="page-link pointer"
+                  onClick={() => setCurrentPage(1)}
                 >
-                  {page}
+                  1
                 </span>
               </li>
-            ))}
+            ) : null}
+
+            {pages.map((page) => {
+              return page < currentPage + pageRange &&
+                page > currentPage - pageRange ? (
+                <li className="page-item" key={page}>
+                  <span
+                    className={`page-link pointer ${
+                      currentPage == page ? "alert-success" : ""
+                    }`}
+                    onClick={() => setCurrentPage(page)}
+                  >
+                    {page}
+                  </span>
+                </li>
+              ) : null;
+            })}
+
+            {currentPage <= pageCount - pageRange ? (
+              <li className="page-item ms-2">
+                <span
+                  className="page-link pointer"
+                  onClick={() => setCurrentPage(pageCount)}
+                >
+                  {pageCount}
+                </span>
+              </li>
+            ) : null}
+
             <li className="page-item">
               <span
                 className={`page-link pointer ${
@@ -135,4 +154,4 @@ const PaginatedTable = ({
   );
 };
 
-export default PaginatedTable;
+export default PaginatedDataTable;

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PaginatedTable from "../../componenet/paginatedTable";
 import AddCategory from "./AddCategory";
-import { deleteCategoryService, getCategoryService } from "../../services/category";
+import { deleteCategoryService, getCategoryService } from "../../services/Category";
 import { Alert, Confirm } from "../../assets/utils/alert";
 import ShowInMenu from "./tableaddition/ShowInMenu";
 import Actions from "./tableaddition/Actions";
