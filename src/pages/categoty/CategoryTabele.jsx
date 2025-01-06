@@ -50,7 +50,7 @@ const handelDeleteCategory = async (rowData)=>{
   const dataInfo = [
     { field: "id", title: "#" },
     { field: "title", title: "عنوان محصول" },
-    { field: "show_in_menu", title: " نمایش در منو" },
+    // { field: "show_in_menu", title: " نمایش در منو" },
     { field: "parent_id", title: " والد " },
   ];
   const additionField = [

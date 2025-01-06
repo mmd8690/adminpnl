@@ -64,13 +64,6 @@ const AddBrands = ({ setData  , editBrand , seteditBrand}) => {
                   label="توضیحات"
                   placeholder="توضیحات"
                 />
-{/* 
-                <FormikControl
-                  control="file"
-                  name="logo"
-                  label="تصویر"
-                  placeholder="تصویر"
-                /> */}
 
                 <div className="btn_box text-center col-12">
                   <SumitButton />

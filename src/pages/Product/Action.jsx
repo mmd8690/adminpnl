@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 const Actions = ({ rowData, handleDeleteProduct }) => {
-  const [kal, setkal] = useState(2);
+  const navigate=useNavigate()  
   useEffect(() => {
   }, []);
   return (
@@ -9,8 +10,7 @@ const Actions = ({ rowData, handleDeleteProduct }) => {
         className="fas fa-edit text-warning mx-1 hoverable_text pointer has_tooltip"
         title="ویرایش محصول"
         data-bs-toggle="modal"
-        data-bs-placement="top"
-        data-bs-target="#add_product_modal"
+        onClick={()=>navigate("addproducts" , {state:{productToEdite:rowData}})}
       ></i>
       <i
         className="fas fa-receipt text-info mx-1 hoverable_text pointer has_tooltip"

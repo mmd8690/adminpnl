@@ -7,7 +7,7 @@ export const AdminContext=createContext({
 const AdminContextContiner=({children})=>{
     const [showSidebar,setShowsidebar]=useState(false)
     return(
-    <AdminContext.Provider value={{
+    <AdminContext.Provider  value={{
         showSidebar,
         setShowsidebar
     }}>
