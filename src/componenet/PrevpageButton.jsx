@@ -1,13 +1,11 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const PrevpageButton = () => {
+const PrevPageButton = ({className}) => {
     const navigate = useNavigate()
-  return (
-    <div>
-      <button className={`btn btn-sm btn-secondary`} onClick={()=>navigate(-1)}> بازگشت </button>
-    </div>
-  );
-};
+    return (
+        <button type='button' className={`btn btn-sm btn-secondary ${className}`} onClick={()=>navigate(-1)}>بازگشت</button>
+    );
+}
 
-export default PrevpageButton;
+export default PrevPageButton;

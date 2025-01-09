@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 const Actions = ({ rowData, handleDeleteProduct }) => {
   const navigate=useNavigate()  
   useEffect(() => {
+    
   }, []);
   return (
     <>
@@ -15,8 +16,8 @@ const Actions = ({ rowData, handleDeleteProduct }) => {
       <i
         className="fas fa-receipt text-info mx-1 hoverable_text pointer has_tooltip"
         title="ثبت ویژگی"
-        data-bs-toggle="modal"
-        data-bs-target="#add_product_attr_modal"
+        onClick={()=>navigate("/Product/set-Attr" ,{state:{selectedProduct:rowData}})
+      }
       ></i>
       <i
         className="fas fa-times text-danger mx-1 hoverable_text pointer has_tooltip"

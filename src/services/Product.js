@@ -6,9 +6,9 @@ export const getProductsService = (page, countOnPage, searchChar) => {
 export const deleteProductsService = (Productid) => {
   return HttpsService(`/admin/products/${Productid}`, "delete");
 };
-export const createNewProductService = (data) => {
-  return HttpsService("/admin/products","post", data );
-};
+export const createNewProductService = (data)=>{
+  return HttpsService('/admin/products', 'post',  data)
+}
 export const editProductService = (productId, data)=>{
   return HttpsService(`/admin/products/${productId}`, 'put', data)
 }
@@ -17,4 +17,7 @@ export const getFewerProductsService = ()=>{
 }
 export const toggleNotificationService = (productId)=>{
   return HttpsService(`/admin/products/toggle_notification/${productId}`, 'get')
+}
+export const addProductAttrService = (productId, data)=>{
+  return HttpsService(`/admin/products/${productId}/add_attr`, 'post', data)
 }

@@ -16,14 +16,14 @@ const AddProduct = () => {
   const [mainCategories, setmainCategories] = useState([]);
   const [selectedColors, setSelectedColors] = useState([]); // used in editting
   const [selectedGuarantees, setSelectedGuarantees] = useState([]); // used in editting
-  const [selectedCategories, setSelectedCategories]=useState([]); // used in editting
+  const [selectedCategories, setSelectedCategories] = useState([]); // used in editting
   const [brands, setBrands] = useState([]);
   const [colors, setColors] = useState([]);
   const [guarantees, setGuarantees] = useState([]);
-  const [reInitialValues , setreInitialValues ] = useState(null)
-  const location = useLocation()
+  const [reInitialValues, setreInitialValues] = useState(null);
+  const location = useLocation();
 
-  const productToEdite=location.state?.productToEdite
+  const productToEdite = location.state?.productToEdite;
 
   const getAllParentCategories = async () => {
     const res = await getCategoryService();
@@ -80,13 +80,25 @@ const AddProduct = () => {
       );
     }
   };
-  const setInitialSelectedValues = ()=>{
+  const setInitialSelectedValues = () => {
     if (productToEdite) {
-      setSelectedCategories(productToEdite.categories.map(c=>{return {id:c.id, value:c.title}}))
-      setSelectedColors(productToEdite.colors.map(c=>{return {id:c.id, value:c.title}}))
-      setSelectedGuarantees(productToEdite.guarantees.map(c=>{return {id:c.id, value:c.title}}))
+      setSelectedCategories(
+        productToEdite.categories.map((c) => {
+          return { id: c.id, value: c.title };
+        })
+      );
+      setSelectedColors(
+        productToEdite.colors.map((c) => {
+          return { id: c.id, value: c.title };
+        })
+      );
+      setSelectedGuarantees(
+        productToEdite.guarantees.map((c) => {
+          return { id: c.id, value: c.title };
+        })
+      );
     }
-  }
+  };
   useEffect(() => {
     getAllParentCategories();
     getAllBrands();
@@ -94,21 +106,21 @@ const AddProduct = () => {
     getAllGuarantees();
     setInitialSelectedValues();
     for (const key in productToEdite) {
-      if (productToEdite[key] === null) productToEdite[key] = ""
+      if (productToEdite[key] === null) productToEdite[key] = "";
     }
-    if(productToEdite){
+    if (productToEdite) {
       setreInitialValues({
         ...productToEdite,
-        category_ids:productToEdite.categories.map(c=>c.id).join("-"),
-        color_ids : productToEdite.colors.map(c=>c.id).join("-"),
-        guarantee_ids: productToEdite.guarantees.map(c=>c.id).join("-"),
+        category_ids: productToEdite.categories.map((c) => c.id).join("-"),
+        color_ids: productToEdite.colors.map((c) => c.id).join("-"),
+        guarantee_ids: productToEdite.guarantees.map((c) => c.id).join("-"),
       });
-    }else setreInitialValues(null)
+    } else setreInitialValues(null);
   }, []);
   return (
     <Formik
-      initialValues={reInitialValues ||initialValues}
-      onSubmit={(values, actions) => onSubmit(values, actions , productToEdite)}
+      initialValues={reInitialValues || initialValues}
+      onSubmit={(values, actions) => onSubmit(values, actions, productToEdite)}
       validationSchema={validationSchema}
       enableReinitialize
     >
@@ -116,17 +128,20 @@ const AddProduct = () => {
         return (
           <Form>
             <div className="container mb-5">
-            <h4 className="text-center my-3">{productToEdite ? (
-                <>
-                  ویرایش محصول :  
-                  <span className="text-primary">{productToEdite.title}</span> 
-                </>
-              ) : "افزودن محصول جدید"}</h4>
-                <div className="text-left col-md-6 col-lg-8 m-auto my-3">
-              </div>
-            
-                <PrevpageButton/>
-              
+              <h4 className="text-center my-3">
+                {productToEdite ? (
+                  <>
+                    ویرایش محصول :
+                    <span className="text-primary">{productToEdite.title}</span>
+                  </>
+                ) : (
+                  "افزودن محصول جدید"
+                )}
+              </h4>
+              <div className="text-left col-md-6 col-lg-8 m-auto my-3"></div>
+
+              <PrevpageButton />
+
               <div className="row justify-content-center">
                 <FormikControle
                   className="col-md-6 col-lg-8"
@@ -151,7 +166,7 @@ const AddProduct = () => {
                   label="دسته اصلی"
                   firstItem="دسته مورد نظر را انتخاب کنبد..."
                   resultType="string"
-                  initialItems={selectedCategories}   
+                  initialItems={selectedCategories}
                 />
 
                 <FormikControle
@@ -188,7 +203,7 @@ const AddProduct = () => {
                   options={brands}
                   name="brand_id"
                   firstItem="برند مورد نظر را انتخاب کنبد..."
-                  />
+                />
 
                 <FormikControle
                   label="رنگ"
@@ -219,14 +234,13 @@ const AddProduct = () => {
                   name="descriptions"
                   placeholder="فقط از حروف واعداد استفاده شود"
                 />
-
-                <FormikControle
+                {/* <FormikControle
                   label="توضیحات"
                   className="col-md-6 col-lg-8"
                   control="ckeditor"
                   name="descriptions"
                   placeholder="فقط از حروف واعداد استفاده شود"
-                />
+                /> */}
 
                 <FormikControle
                   label="توضیحات کوتاه"
@@ -243,7 +257,6 @@ const AddProduct = () => {
                   name="cart_descriptions"
                   placeholder="فقط از حروف واعداد استفاده شود"
                 />
-
 
                 <FormikControle
                   label="کلمات کلیدی "

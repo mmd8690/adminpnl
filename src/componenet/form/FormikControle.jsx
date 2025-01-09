@@ -6,11 +6,14 @@ import Switch from "./Switch";
 import Textarea from "./Textarea";
 import MultiSelect from "./MultiSelect";
 import SearchableSelect from "./SearchableSelect ";
+import CKeditor from "./CKeditor";
 
 const FormikControl = (props) => {
   switch (props.control) {
     case "select":
       return <Select {...props} />;
+    case "ckeditor":
+      return <CKeditor />;
     case "multiselect":
       return <MultiSelect {...props} />;
     case "searchableSelect":

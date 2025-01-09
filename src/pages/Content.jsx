@@ -20,6 +20,7 @@ import Logout from "./auth/Logout";
 import CategorieChildren from "./categoty/CategorieChildren";
 import Attributes from "./categoty/attr/Atribute";
 import AddProduct from "./Product/AddProduct";
+import SetAttribute from "./Product/setAttr/SetAtribute";
 const Content = () => {
   const { showSidebar } = useContext(AdminContext);
 
@@ -37,6 +38,7 @@ const Content = () => {
           <Route path='/categories/:categorieId/attributes' element={<Attributes/>}/>
           <Route path="/Product" element={<Product />} />
           <Route path="/Product/addproducts" element={<AddProduct/>} />
+          <Route path="/Product/set-Attr" element={<SetAttribute />} />
           <Route path="/colors" element={<Color />} />
           <Route path="/gurantis" element={<Guranti />} />
           <Route path="/brands" element={<Brand />} />

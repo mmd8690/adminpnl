@@ -11,11 +11,11 @@ axios.interceptors.response.use((res)=>{
         }
         res.data.message = message
     }
-    Alert("مشکل...!", res.data.message, "warning");
+    Alert("warning", res.data.message,"مشکل...!" );
 }
 return res
 },(error)=>{
-  Alert(error.response.status, "مشکلی رخ داده است", "error");
+  Alert("error", error.response.status,"مشکلی رخ داده است" );
   return Promise.reject(error)
 })
 const HttpsService = (url, method, data=null)=>{
