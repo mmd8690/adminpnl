@@ -1,5 +1,5 @@
 import React from 'react';
-import ModalsContiner from '../../componenet/ModalsContiner';
+import ModalsContiner from '../../../componenet/ModalsContiner';
 
 const AddAtribute = () => {
     return (

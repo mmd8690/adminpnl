@@ -20,6 +20,11 @@ const Actions = ({ rowData, handleDeleteProduct }) => {
       }
       ></i>
       <i
+        className="fas fa-images text-success"
+        title="مدیریت گالری"
+        onClick={()=>navigate("/Product/gallery" , {state:{selectedProduct:rowData}})}
+        ></i>
+      <i
         className="fas fa-times text-danger mx-1 hoverable_text pointer has_tooltip"
         title="حذف محصول"
         data-bs-toggle="tooltip"

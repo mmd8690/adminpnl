@@ -21,3 +21,14 @@ export const toggleNotificationService = (productId)=>{
 export const addProductAttrService = (productId, data)=>{
   return HttpsService(`/admin/products/${productId}/add_attr`, 'post', data)
 }
+export const addProductImageService = (productId, data)=>{
+  return HttpsService(`/admin/products/${productId}/add_image`, 'post', data)
+}
+
+  export const deleteProductImageService = (imageId)=>{
+    return HttpsService(`/admin/products/gallery/${imageId}`, 'delete')
+  }
+  
+  export const setMainProductImageService = (imageId)=>{
+    return HttpsService(`/admin/products/gallery/set_main/${imageId}`, 'get')
+  }
